@@ -1,0 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Application.Tables
+{//this class for return attende details inside the table
+    public class AttendeeDto
+    {
+        public string Username { get; set; }
+        public string DisplayName { get; set; }
+        public string Bio { get; set; }
+        public string Image { get; set; }
+    }
+}

@@ -1,0 +1,11 @@
+- for drop database
+dotnet ef database drop -s API -p Persistence
+-dotnet watch --no-hot-reload
+
+-- for adding new property for entity
+dotnet ef migeations add AddNameProperty -p Persistence -s API
+
+-- for adding new seed data
+dotnet ef database drop -p Persistance -s API
+cd API
+dotnet watch run
