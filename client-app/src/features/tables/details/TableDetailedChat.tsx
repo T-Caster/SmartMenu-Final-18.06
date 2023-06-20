@@ -1,6 +1,6 @@
 import { Formik, Form, Field, FieldProps } from 'formik';
 import { observer } from 'mobx-react-lite'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { Segment, Header, Comment, Loader, Dropdown } from 'semantic-ui-react'
 import MyTextArea from '../../../app/common/form/MyTextArea';
@@ -16,9 +16,28 @@ interface Props {
 
 export default observer(function ActivityDetailedChat({ tableId,table }: Props) {
     const { commentStore } = useStore();
-    const recipeType = [
-        {key:"CLeanTable",text:"CLeanTable", value:"CLeanTable"}
-    ]
+    const[value,setValue] = useState('');
+    const options = [
+        {
+          label: "Apple",
+          value: "apple",
+        },
+        {
+          label: "Mango",
+          value: "mango",
+        },
+        {
+          label: "Banana",
+          value: "banana",
+        },
+        {
+          label: "Pineapple",
+          value: "pineapple",
+        },
+      ];
+      function handleSelect(event: { target: { value: React.SetStateAction<string>; }; }) {
+        setValue(event.target.value)
+      }
 
 useEffect(() => {
     if (tableId) {
@@ -93,7 +112,6 @@ return (
         </Comment.Group>
     </Segment>
 
-
     <Segment
         textAlign='center'
         attached='top'
@@ -115,27 +133,30 @@ return (
             {({ isSubmitting, isValid, handleSubmit }) => (
                 <Form className='ui form'>
                 <Field name='body'>  
-                {(props: FieldProps) => (
-                   <Dropdown
-                    name="categoryRequests"
-                    placeholder='select request'
-                    options={recipeType}
-                    
-                   />
-                // <div style={{ position: 'relative' }}>
-                // <textarea                                           
-                //     rows={2}
-                //     {...props.field }
-                //     onKeyPress={e => {
-                //         if(table.isGoing) {
-                //             if (e.key === 'Enter' && !e.shiftKey) {
-                //                 e.preventDefault();
-                //                 isValid && handleSubmit();
-                //             }
-                //         }                                                                                       
-                //     }}
-                // />                                    
-                // </div>
+                {(props: FieldProps) => (                          
+                    <div style={{ position: 'relative' }}>
+                     <select onChange={handleSelect}>
+                        {options.map((option) => (
+                            <option value={option.value}>{option.label}</option>
+                        ))}
+                        
+                    </select>
+                   
+                    <textarea 
+                                                            
+                        
+                        {...props.field}
+                        onKeyPress={e => {
+                            if(table.isGoing) {
+                                if (e.key === 'Enter' && !e.shiftKey) {
+                                    e.preventDefault();
+                                    isValid && handleSubmit();
+                                }
+                            }                                                                                       
+                        }}
+                    > 
+                    </textarea>                                   
+                    </div>
                 )}
                 </Field>
                 </Form>
