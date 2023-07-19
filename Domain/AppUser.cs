@@ -11,6 +11,7 @@ namespace Domain
         public string DisplayName { get; set; }
         
         public string Bio { get; set; }
+        
         public ICollection<TableAttendee>Tables { get; set; }
 
         public ICollection<Photo> Photos{get; set; } // one to many relationship

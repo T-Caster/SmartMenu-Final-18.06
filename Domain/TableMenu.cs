@@ -5,16 +5,13 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class TableAttendee
+    public class TableMenu
     {
-        public string AppUserId { get; set; }
-
-        public AppUser AppUser { get; set; }
-
+        public string ProductId { get; set; }
+        public Product Product { get; set; }
         public Guid TableId { get; set; }
-
         public Table Table { get; set; }
 
-        public bool IsHost { get; set; }
+        
     }
-}       
+}
