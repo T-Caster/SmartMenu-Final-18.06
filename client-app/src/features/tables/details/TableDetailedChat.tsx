@@ -16,28 +16,7 @@ interface Props {
 
 export default observer(function ActivityDetailedChat({ tableId,table }: Props) {
     const { commentStore } = useStore();
-    const[value,setValue] = useState('');
-    const options = [
-        {
-          label: "Apple",
-          value: "apple",
-        },
-        {
-          label: "Mango",
-          value: "mango",
-        },
-        {
-          label: "Banana",
-          value: "banana",
-        },
-        {
-          label: "Pineapple",
-          value: "pineapple",
-        },
-      ];
-      function handleSelect(event: { target: { value: React.SetStateAction<string>; }; }) {
-        setValue(event.target.value)
-      }
+   
 
 useEffect(() => {
     if (tableId) {
@@ -134,27 +113,9 @@ return (
                 <Form className='ui form'>
                 <Field name='body'>  
                 {(props: FieldProps) => (                          
-                    <div style={{ position: 'relative' }}>
-                     <select onChange={handleSelect}>
-                        {options.map((option) => (
-                            <option value={option.value}>{option.label}</option>
-                        ))}
-                        
-                    </select>
-                   
-                    <textarea 
-                                                            
-                        
-                        {...props.field}
-                        onKeyPress={e => {
-                            if(table.isGoing) {
-                                if (e.key === 'Enter' && !e.shiftKey) {
-                                    e.preventDefault();
-                                    isValid && handleSubmit();
-                                }
-                            }                                                                                       
-                        }}
-                    > 
+                    <div style={{ position: 'relative' }}>                                   
+                    <textarea>                     
+                    
                     </textarea>                                   
                     </div>
                 )}
