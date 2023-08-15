@@ -16,28 +16,7 @@ interface Props {
 
 export default observer(function ActivityDetailedChat({ tableId,table }: Props) {
     const { commentStore } = useStore();
-    const[value,setValue] = useState('');
-    const options = [
-        {
-          label: "Apple",
-          value: "apple",
-        },
-        {
-          label: "Mango",
-          value: "mango",
-        },
-        {
-          label: "Banana",
-          value: "banana",
-        },
-        {
-          label: "Pineapple",
-          value: "pineapple",
-        },
-      ];
-      function handleSelect(event: { target: { value: React.SetStateAction<string>; }; }) {
-        setValue(event.target.value)
-      }
+   
 
 useEffect(() => {
     if (tableId) {
@@ -134,10 +113,16 @@ return (
                 <Form className='ui form'>
                 <Field name='body'>  
                 {(props: FieldProps) => (                          
+<<<<<<< HEAD
                     <div style={{ position: 'relative' }}>
                    
                     <textarea >
                                             
+=======
+                    <div style={{ position: 'relative' }}>                                   
+                    <textarea>                     
+                    
+>>>>>>> 20b9c6cbe3dfeb1dca1f7168ae785563851eaa64
                     </textarea>                                   
                     </div>
                 )}
