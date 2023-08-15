@@ -13,6 +13,7 @@ interface Store {
     modalStore: ModalStore;
     profileStore: ProfileStore;
     commentStore:CommentStore;
+    
 
 }
 

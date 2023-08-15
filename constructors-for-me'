@@ -9,3 +9,10 @@ dotnet ef migeations add AddNameProperty -p Persistence -s API
 dotnet ef database drop -p Persistance -s API
 cd API
 dotnet watch run
+
+-- Adding tableRequest
+1- create TableRequest inside Domain folder
+2- adding dbSet and builder inside DataContext
+3- migrations.....
+4- create request file inside model
+5- create requestStore 

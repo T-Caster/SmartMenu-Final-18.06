@@ -14,6 +14,7 @@ namespace Persistence
         public DbSet<TableAttendee> TableAttendees{get;set;}
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Comment> Comments{ get; set; }
+        public DbSet<TableRequest> Requests{ get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //this is our configuration for our MANY to MANY relationship
@@ -38,7 +39,12 @@ namespace Persistence
             .HasOne(a => a.Table)
             .WithMany(c => c.Comments)
             .OnDelete(DeleteBehavior.Cascade);
-
+            
+            //for tableRequest
+            builder.Entity<TableRequest>()
+            .HasOne(a => a.Table)
+            .WithMany(r => r.Requests)
+            .OnDelete(DeleteBehavior.Cascade);
         }
         
     }

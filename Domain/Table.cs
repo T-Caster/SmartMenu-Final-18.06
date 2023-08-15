@@ -8,6 +8,7 @@ namespace Domain
         public bool IsCancelled { get; set; }
         public ICollection<TableAttendee > Attendees{ get; set; } = new List<TableAttendee>(); 
         public ICollection<Comment>Comments { get; set; } = new List<Comment>();
+        public ICollection<TableRequest>Requests{ get; set;} = new List<TableRequest>();
 
     }   
 }

@@ -135,26 +135,9 @@ return (
                 <Field name='body'>  
                 {(props: FieldProps) => (                          
                     <div style={{ position: 'relative' }}>
-                     <select onChange={handleSelect}>
-                        {options.map((option) => (
-                            <option value={option.value}>{option.label}</option>
-                        ))}
-                        
-                    </select>
                    
-                    <textarea 
-                                                            
-                        
-                        {...props.field}
-                        onKeyPress={e => {
-                            if(table.isGoing) {
-                                if (e.key === 'Enter' && !e.shiftKey) {
-                                    e.preventDefault();
-                                    isValid && handleSubmit();
-                                }
-                            }                                                                                       
-                        }}
-                    > 
+                    <textarea >
+                                            
                     </textarea>                                   
                     </div>
                 )}
