@@ -113,16 +113,10 @@ return (
                 <Form className='ui form'>
                 <Field name='body'>  
                 {(props: FieldProps) => (                          
-<<<<<<< HEAD
-                    <div style={{ position: 'relative' }}>
-                   
-                    <textarea >
-                                            
-=======
+
                     <div style={{ position: 'relative' }}>                                   
                     <textarea>                     
-                    
->>>>>>> 20b9c6cbe3dfeb1dca1f7168ae785563851eaa64
+                                        
                     </textarea>                                   
                     </div>
                 )}
