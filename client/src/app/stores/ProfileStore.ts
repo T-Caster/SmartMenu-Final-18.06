@@ -1,4 +1,4 @@
-import {Photo, Profile} from "../models/profile";
+import {Photo, Profile} from "../../../../shared/models/profile";
 import {makeAutoObservable, runInAction} from "mobx";
 import agent from "../api/agent";
 import {toast} from "react-toastify";

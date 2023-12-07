@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Button, Icon, Item, Label, Segment } from 'semantic-ui-react';
-import { Table } from '../../../app/models/table';
+import { Table } from '../../../../../shared/models/table';
 import React from 'react';
 import { format } from "date-fns";
 import TableListItemAtendee from './TableListItemAtendee';

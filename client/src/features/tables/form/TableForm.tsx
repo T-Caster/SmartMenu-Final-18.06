@@ -9,7 +9,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import MyTextInput from "../../../app/common/form/MyTextInput";
 import MyDateInput from "../../../app/common/form/MyDateInput";
-import {TableFormValues } from "../../../app/models/table";
+import {TableFormValues } from "../../../../../shared/models/table";
 
 export default observer(function TableForm() {
   const { tableStore } = useStore();

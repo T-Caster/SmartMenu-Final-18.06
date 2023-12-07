@@ -1,5 +1,5 @@
 import React from 'react';
-import { Profile } from '../../app/models/profile';
+import { Profile } from '../../../../shared/models/profile';
 import { Card, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 

@@ -1,5 +1,5 @@
 import { HubConnection } from "@microsoft/signalr";
-import { ChatRequest } from "../models/request";
+import { ChatRequest } from "../../../../shared/models/request";
 import { makeAutoObservable } from "mobx";
 
 export default class RequestStore{

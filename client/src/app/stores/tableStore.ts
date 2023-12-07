@@ -1,10 +1,10 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { Table, TableFormValues } from "../models/table";
+import { Table, TableFormValues } from "../../../../shared/models/table";
 import agent from "../api/agent";
 import { v4 as uuid } from 'uuid';
 import { format } from "date-fns";
 import { store } from "./store";
-import { Profile } from "../models/profile";
+import { Profile } from "../../../../shared/models/profile";
 import { profileEnd } from "console";
 
 export default class TableStore {

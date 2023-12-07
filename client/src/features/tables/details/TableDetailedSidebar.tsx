@@ -1,7 +1,7 @@
 import { Segment, List, Label, Item, Image } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
-import { Table } from '../../../app/models/table'
+import { Table } from '../../../../../shared/models/table'
 
 interface Props {
     table: Table

@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { SyntheticEvent, useState } from "react";
 import { Card, Header, Tab, Image, Grid, Button } from "semantic-ui-react";
 import PhotoUploadWidget from "../../app/common/imageUpload/PhotoUploadWidget";
-import { Photo, Profile } from "../../app/models/profile";
+import { Photo, Profile } from "../../../../shared/models/profile";
 import { useStore } from "../../app/stores/store";
 
 interface Props {

@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
-import { Table, TableFormValues } from '../models/table';
+import { Table, TableFormValues } from '../../../../shared/models/table';
 import { router } from '../router/Routes';
 import { store } from '../stores/store';
-import { User, UserFormValues } from '../models/user';
-import { Photo, Profile } from '../models/profile';
+import { User, UserFormValues } from '../../../../shared/models/user';
+import { Photo, Profile } from '../../../../shared/models/profile';
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
