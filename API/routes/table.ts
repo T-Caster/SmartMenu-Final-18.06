@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { ServerError } from '../../shared/models/serverError';
+import { createError, createServerError } from '../utils/errorUtils';
 
 const router = express.Router();
 
@@ -68,22 +68,5 @@ router.post('/:id/attend', async (req: Request, res: Response) => {
         res.status(serverError.statusCode).json(serverError);
     }
 });
-
-// Utility function to create server errors
-const createServerError = (error: unknown): ServerError => {
-    if (error instanceof Error) {
-        return {
-            statusCode: 500,
-            message: 'An error occurred',
-            details: error.message
-        };
-    } else {
-        return {
-            statusCode: 500,
-            message: 'An error occurred',
-            details: 'Unknown error'
-        };
-    }
-};
 
 export default router;
