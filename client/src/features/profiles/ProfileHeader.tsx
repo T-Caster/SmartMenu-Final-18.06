@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Grid, Segment, Item, Header, Statistic, Divider, Reveal, Button } from "semantic-ui-react";
-import { Profile } from '../../../../shared/models/profile';
+import { Profile } from '../../../../API/models/profile';
 
 interface Props {
     profile: Profile

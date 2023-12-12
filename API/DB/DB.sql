@@ -23,14 +23,15 @@ USE `smartmenu`;
 CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `body` text DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `table_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `userId` int(11) DEFAULT NULL,
+  `tableId` int(11) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `table_id` (`table_id`),
-  CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`)
+  KEY `userId` (`userId`),
+  KEY `tableId` (`tableId`),
+  CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
+  CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`tableId`) REFERENCES `tables` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
@@ -39,11 +40,13 @@ CREATE TABLE IF NOT EXISTS `comments` (
 CREATE TABLE IF NOT EXISTS `photos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `url` text DEFAULT NULL,
-  `is_main` tinyint(1) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `isMain` tinyint(1) DEFAULT NULL,
+  `userId` int(11) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `photos_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  KEY `userId` (`userId`),
+  CONSTRAINT `photos_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
@@ -52,14 +55,15 @@ CREATE TABLE IF NOT EXISTS `photos` (
 CREATE TABLE IF NOT EXISTS `requests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `body` text DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `table_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `userId` int(11) DEFAULT NULL,
+  `tableId` int(11) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `table_id` (`table_id`),
-  CONSTRAINT `requests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `requests_ibfk_2` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`)
+  KEY `userId` (`userId`),
+  KEY `tableId` (`tableId`),
+  CONSTRAINT `requests_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
+  CONSTRAINT `requests_ibfk_2` FOREIGN KEY (`tableId`) REFERENCES `tables` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
@@ -67,9 +71,10 @@ CREATE TABLE IF NOT EXISTS `requests` (
 -- Dumping structure for table smartmenu.tables
 CREATE TABLE IF NOT EXISTS `tables` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created_at` date DEFAULT NULL,
   `number` int(11) DEFAULT NULL,
-  `is_cancelled` tinyint(1) DEFAULT NULL,
+  `isCancelled` tinyint(1) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `number` (`number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -78,13 +83,15 @@ CREATE TABLE IF NOT EXISTS `tables` (
 
 -- Dumping structure for table smartmenu.table_attendees
 CREATE TABLE IF NOT EXISTS `table_attendees` (
-  `user_id` int(11) DEFAULT NULL,
-  `table_id` int(11) DEFAULT NULL,
-  `is_host` tinyint(1) DEFAULT NULL,
-  KEY `user_id` (`user_id`),
-  KEY `table_id` (`table_id`),
-  CONSTRAINT `table_attendees_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `table_attendees_ibfk_2` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`)
+  `userId` int(11) DEFAULT NULL,
+  `tableId` int(11) DEFAULT NULL,
+  `isHost` tinyint(1) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  KEY `userId` (`userId`),
+  KEY `tableId` (`tableId`),
+  CONSTRAINT `table_attendees_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
+  CONSTRAINT `table_attendees_ibfk_2` FOREIGN KEY (`tableId`) REFERENCES `tables` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
@@ -92,11 +99,13 @@ CREATE TABLE IF NOT EXISTS `table_attendees` (
 -- Dumping structure for table smartmenu.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `display_name` varchar(255) NOT NULL,
+  `displayName` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
+  `passwordHash` varchar(255) NOT NULL,
   `role` varchar(255) NOT NULL DEFAULT 'user',
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)

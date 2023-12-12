@@ -7,7 +7,7 @@ import MyTextArea from '../../../app/common/form/MyTextArea';
 import { useStore } from '../../../app/stores/store';
 import * as Yup from 'yup';
 import { formatDistanceToNow } from 'date-fns';
-import { Table } from '../../../../../shared/models/table';
+import { Table } from '../../../../../API/models/table';
 
 interface Props {
     tableId: string;

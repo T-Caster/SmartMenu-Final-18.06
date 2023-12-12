@@ -1,5 +1,5 @@
 // errorUtils.ts
-import { ServerError } from '../../shared/models/serverError';
+import { ServerError } from '../models/serverError';
 
 export const createError = (statusCode: number, details?: string): ServerError => {
     return {

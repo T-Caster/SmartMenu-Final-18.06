@@ -1,13 +1,54 @@
 import express, { Request, Response } from 'express';
 import { createError, createServerError } from '../utils/errorUtils';
+import PhotoModel from '../DB/photo';
+import { sequelize } from '../DB/database';
+import { authenticateToken } from '../utils/authUtils';
+import UserModel from '../DB/user';
+import { Profile } from '../models/profile';
+import multer from 'multer';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 
 const router = express.Router();
 
+// Set up Cloudinary storage for Multer
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {},
+});
+
+const parser = multer({ storage: storage });
+
 // Endpoint to get a profile by username
 router.get('/:username', async (req: Request, res: Response) => {
+    console.log("huhh")
     try {
-        // Implement logic to retrieve profile by username
-        res.status(200).json({ message: 'Profile details for ' + req.params.username });
+        const user = await UserModel.findOne({
+            where: { username: req.params.username },
+            include: [{ model: PhotoModel, as: 'photos' }] // Assuming PhotoModel is associated with UserModel
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Find the main photo
+        const mainPhoto = user.photos?.find(photo => photo.isMain);
+        const profilePhotos = user.photos?.map(photo => ({
+            id: photo.id.toString(),
+            url: photo.url,
+            isMain: photo.isMain
+        })) || [];
+
+        const profile: Profile = {
+            username: user.username,
+            displayName: user.displayName,
+            image: mainPhoto?.url || undefined,
+            bio: user.bio,
+            photos: profilePhotos
+        };
+
+        res.status(200).json(profile);
     } catch (error) {
         const serverError = createServerError(error)
         res.status(serverError.statusCode).json(serverError);
@@ -15,24 +56,62 @@ router.get('/:username', async (req: Request, res: Response) => {
 });
 
 // Endpoint for uploading a photo
-router.post('/photos', async (req: Request, res: Response) => {
+router.post('/photos', authenticateToken, parser.single('File'), async (req: Request, res: Response) => {
     try {
-        // Implement photo upload logic
-        // Handle multipart/form-data
-        res.status(200).json({ message: 'Photo upload successful' });
+        if (!req.user || typeof req.user.id !== 'number') {
+            throw createError(401, 'Invalid token');
+        }
+
+        if (!req.file) {
+            throw createError(400, 'No file uploaded');
+        }
+
+        const uploadedImage = req.file.path;
+
+        const newPhoto = await PhotoModel.create({
+            url: uploadedImage,
+            isMain: false,
+            userId: req.user.id
+        });
+
+        res.status(200).send(newPhoto);
     } catch (error) {
-        const serverError = createServerError(error)
+        const serverError = createServerError(error);
         res.status(serverError.statusCode).json(serverError);
     }
 });
 
 // Endpoint to set a main photo
-router.post('/photos/:id/setMain', async (req: Request, res: Response) => {
+router.post('/photos/:id/setMain', authenticateToken, async (req: Request, res: Response) => {
     try {
-        // Implement logic to set a main photo
-        res.status(200).json({ message: 'Main photo set for id: ' + req.params.id });
+        if (!req.user || typeof req.user.id !== 'number') {
+            throw createError(401, 'Invalid token');
+        }
+
+        const photoId = parseInt(req.params.id);
+
+        // Start a transaction
+        await sequelize.transaction(async (transaction) => {
+            // Reset isMain for all photos of the user
+            await PhotoModel.update({ isMain: false }, {
+                where: { userId: req.user?.id }, // Assuming req.userId is available
+                transaction
+            });
+
+            // Set the specified photo as main
+            const photo = await PhotoModel.findByPk(photoId, { transaction });
+
+            if (!photo) {
+                return res.status(404).json({ message: 'Photo not found' });
+            }
+
+            photo.isMain = true;
+            await photo.save({ transaction });
+        });
+
+        res.status(200).json({ message: 'Main photo set', photoId });
     } catch (error) {
-        const serverError = createServerError(error)
+        const serverError = createServerError(error);
         res.status(serverError.statusCode).json(serverError);
     }
 });

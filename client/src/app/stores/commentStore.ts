@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { ChatComment } from "../../../../shared/models/comment";
+import { ChatComment } from "../../../../API/models/comment";
 import { store } from "./store";
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 

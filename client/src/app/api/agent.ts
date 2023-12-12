@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
-import { Table, TableFormValues } from '../../../../shared/models/table';
+import { Table, TableFormValues } from '../../../../API/models/table';
 import { router } from '../router/Routes';
 import { store } from '../stores/store';
-import { User, UserFormValues } from '../../../../shared/models/user';
-import { Photo, Profile } from '../../../../shared/models/profile';
+import { User, UserFormValues } from '../../../../API/models/user';
+import { Photo, Profile } from '../../../../API/models/profile';
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -91,12 +91,12 @@ const Profiles ={
     uploadPhoto: (file: any) => {
         let formData = new FormData();
         formData.append('File', file);
-        return axios.post<Photo>('photos', formData, {
+        return axios.post<Photo>('profiles/photos', formData, {
             headers: {'Content-Type': 'multipart/form-data'}
         })
     },
-    setMainPhoto: (id: string) => axios.post(`/photos/${id}/setMain`, {}),
-    deletePhoto: (id: string) => axios.delete(`/photos/${id}`)
+    setMainPhoto: (id: string) => axios.post(`profiles/photos/${id}/setMain`, {}),
+    deletePhoto: (id: string) => axios.delete(`profiles/photos/${id}`)
 }
 const agent = {
     Tables,
