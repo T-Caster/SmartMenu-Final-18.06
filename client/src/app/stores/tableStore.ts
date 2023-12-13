@@ -92,20 +92,27 @@ export default class TableStore {
 
     createTable = async (table: TableFormValues) => {
         const user = store.userStore.user;
-        const attendee = new Profile(user!);
+        this.loading = true;
+    
         try {
-            await agent.Tables.create(table);
-            const newTable = new Table(table);
-            newTable.hostUsername = user?.username;
-            newTable.attendees = [attendee];
-            this.setTable(newTable);
+            // Create table on the server and wait for the response
+            const newTable = await agent.Tables.create(table);
+    
             runInAction(() => {
-                this.selectedTable = newTable;
+                if (newTable) {
+                    // If the server response includes the created table data
+                    this.setTable(newTable as Table);
+                    this.selectedTable = newTable as Table;
+                }
+                this.loading = false;
             })
         } catch (error) {
             console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            });
         }
-    }
+    }    
 
     updateTable = async (table: TableFormValues) => {
         try {

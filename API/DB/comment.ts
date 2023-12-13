@@ -5,7 +5,7 @@ class CommentModel extends Model {
     public id!: number;
     public body!: string;
     public userId!: number;
-    public tableId!: number;
+    public tableId!: string;
     public createdAt!: Date;
 }
 
@@ -28,7 +28,7 @@ CommentModel.init({
         }
     },
     tableId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(255),
         allowNull: true,
         references: {
             model: 'tables',

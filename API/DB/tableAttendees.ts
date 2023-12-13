@@ -1,9 +1,11 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../DB/database';
+import UserModel from './user';
+import TableModel from './table';
 
 class TableAttendeeModel extends Model {
     public userId!: number;
-    public tableId!: number;
+    public tableId!: string;
     public isHost!: boolean;
 }
 
@@ -17,7 +19,7 @@ TableAttendeeModel.init({
         }
     },
     tableId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(255),
         allowNull: true,
         references: {
             model: 'tables',
@@ -31,7 +33,20 @@ TableAttendeeModel.init({
 }, {
     tableName: 'table_attendees',
     sequelize,
-    // Note: No primary key is defined as per your requirements
+});
+
+// Set up associations
+UserModel.belongsToMany(TableModel, {
+    through: TableAttendeeModel,
+    foreignKey: 'userId',
+    otherKey: 'tableId'
+});
+
+TableModel.belongsToMany(UserModel, {
+    through: TableAttendeeModel,
+    foreignKey: 'tableId',
+    otherKey: 'userId'
 });
 
 export default TableAttendeeModel;
+

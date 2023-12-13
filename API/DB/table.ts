@@ -2,7 +2,7 @@ import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../DB/database';
 
 class TableModel extends Model {
-    public id!: number;
+    public id!: string;
     public createdAt!: Date;
     public number!: number;
     public isCancelled!: boolean;
@@ -10,8 +10,7 @@ class TableModel extends Model {
 
 TableModel.init({
     id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        autoIncrement: true,
+        type: DataTypes.STRING(255),
         primaryKey: true,
     },
     createdAt: {

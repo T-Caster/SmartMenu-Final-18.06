@@ -1,5 +1,7 @@
 import UserModel from './user';
 import PhotoModel from './photo';
+import TableAttendeeModel from './tableAttendees';
+import TableModel from './table';
 
 // Define the associations
 UserModel.hasMany(PhotoModel, {
@@ -13,4 +15,4 @@ PhotoModel.belongsTo(UserModel, {
 });
 
 // Export the models with associations set up
-export { UserModel, PhotoModel };
+export { UserModel, PhotoModel, TableModel, TableAttendeeModel };

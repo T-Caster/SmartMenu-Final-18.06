@@ -10,7 +10,7 @@ export default observer(function TableDashboard() {
     const {loadTables, tableRegistry} = tableStore;
 
     useEffect(() => {
-        if (tableRegistry.size <= 1) loadTables();
+        loadTables();
     }, [loadTables])
   
     if (tableStore.loadingInitial) return <LoadingComponent content='Loading tables...' />

@@ -29,7 +29,8 @@ async function comparePassword(inputPassword: string, hashedPassword :string) {
 router.get('/', authenticateToken, async (req: Request, res: Response) => {
     try {
         if (!req.user || typeof req.user.id !== 'number') {
-            throw createError(401, 'Invalid token');
+            const error = createError(401, 'Invalid token')
+            return res.status(error.statusCode).send(error)
         }
 
         const user = await UserModel.findByPk(req.user.id, {
@@ -48,7 +49,8 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
 
             res.status(200).json(userResponse);
         } else {
-            throw createError(404, 'User not found');
+            const error = createError(404, 'User not found');
+            return res.status(error.statusCode).send(error)
         }
     } catch (error) {
         console.error(error);
@@ -75,7 +77,8 @@ router.post('/login', async (req: Request, res: Response) => {
             };
             res.status(200).json(userResponse);
         } else {
-            throw createError(401, 'Invalid credentials');
+            const error = createError(401, 'Invalid credentials');
+            return res.status(error.statusCode).send(error)
         }
     } catch (error) {
         const serverError = createServerError(error)

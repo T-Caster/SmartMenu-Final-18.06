@@ -21,7 +21,6 @@ const parser = multer({ storage: storage });
 
 // Endpoint to get a profile by username
 router.get('/:username', async (req: Request, res: Response) => {
-    console.log("huhh")
     try {
         const user = await UserModel.findOne({
             where: { username: req.params.username },
@@ -29,7 +28,8 @@ router.get('/:username', async (req: Request, res: Response) => {
         });
 
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            const error = createError(404, "User bit found")
+            return res.status(error.statusCode).send(error)
         }
 
         // Find the main photo
@@ -59,11 +59,13 @@ router.get('/:username', async (req: Request, res: Response) => {
 router.post('/photos', authenticateToken, parser.single('File'), async (req: Request, res: Response) => {
     try {
         if (!req.user || typeof req.user.id !== 'number') {
-            throw createError(401, 'Invalid token');
+            const error = createError(401, 'Invalid token');
+            return res.status(error.statusCode).send(error)
         }
 
         if (!req.file) {
-            throw createError(400, 'No file uploaded');
+            const error = createError(400, 'No file uploaded');
+            return res.status(error.statusCode).send(error)
         }
 
         const uploadedImage = req.file.path;
@@ -85,7 +87,8 @@ router.post('/photos', authenticateToken, parser.single('File'), async (req: Req
 router.post('/photos/:id/setMain', authenticateToken, async (req: Request, res: Response) => {
     try {
         if (!req.user || typeof req.user.id !== 'number') {
-            throw createError(401, 'Invalid token');
+            const error = createError(401, 'Invalid token');
+            return res.status(error.statusCode).send(error)
         }
 
         const photoId = parseInt(req.params.id);
@@ -102,7 +105,8 @@ router.post('/photos/:id/setMain', authenticateToken, async (req: Request, res: 
             const photo = await PhotoModel.findByPk(photoId, { transaction });
 
             if (!photo) {
-                return res.status(404).json({ message: 'Photo not found' });
+                const error = createError(404, "Photo not found");
+                return res.status(error.statusCode).send(error);
             }
 
             photo.isMain = true;

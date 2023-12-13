@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `body` text DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
-  `tableId` int(11) DEFAULT NULL,
+  `tableId` varchar(255) DEFAULT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `requests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `body` text DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
-  `tableId` int(11) DEFAULT NULL,
+  `tableId` varchar(255) DEFAULT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `requests` (
 
 -- Dumping structure for table smartmenu.tables
 CREATE TABLE IF NOT EXISTS `tables` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` varchar(255) NOT NULL,
   `number` int(11) DEFAULT NULL,
   `isCancelled` tinyint(1) DEFAULT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `tables` (
 -- Dumping structure for table smartmenu.table_attendees
 CREATE TABLE IF NOT EXISTS `table_attendees` (
   `userId` int(11) DEFAULT NULL,
-  `tableId` int(11) DEFAULT NULL,
+  `tableId` varchar(255) DEFAULT NULL,
   `isHost` tinyint(1) DEFAULT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -100,6 +100,7 @@ CREATE TABLE IF NOT EXISTS `table_attendees` (
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `displayName` varchar(255) NOT NULL,
+  `bio` varchar(1024) DEFAULT NULL,
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `passwordHash` varchar(255) NOT NULL,
@@ -109,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
