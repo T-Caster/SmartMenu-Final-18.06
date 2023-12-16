@@ -1,48 +1,53 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { ChatComment } from "../../../../API/models/comment";
 import { store } from "./store";
-import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import io, {Socket} from 'socket.io-client';
 
 export default class CommentStore {
     comments: ChatComment[] = [];
-    hubConnection: HubConnection | null = null;
+    socket: Socket | null = null;
 
     constructor() {
         makeAutoObservable(this);
     }
 
     createHubConnection = (tableId: string) => {
-        if (store.tableStore.selectedTable) {
-            this.hubConnection = new HubConnectionBuilder()
-                .withUrl('http://localhost:5000/chat?tableId=' + tableId, {
-                    accessTokenFactory: () => store.userStore.user?.token!
-                })
-                .withAutomaticReconnect()
-                .configureLogging(LogLevel.Information)
-                .build();
-
-            this.hubConnection.start().catch(error => console.log('Error establishing connection: ', error));
-
-            this.hubConnection.on('LoadComments', (comments: ChatComment[]) => {
-                runInAction(() => {
-                    comments.forEach(comment => {
-                        comment.createdAt = new Date(comment.createdAt + 'Z');
-                    });
-                    this.comments = comments;
-                });
+        const token = store.commonStore.token;
+        if (!token) {
+            console.error('User token is not available');
+            return;
+        }
+    
+        this.socket = io(`http://localhost:5000`, {
+            auth: {
+                token            
+            }
+        });
+    
+        if (this.socket) {
+            this.socket.on('connect', () => {
+                console.log('Connected to server');
+                this.socket?.emit('joinTable', tableId);
             });
 
-            this.hubConnection.on('ReceiveComment', comment => {
+            this.socket.on('loadComments', (loadedComments: ChatComment[]) => {
                 runInAction(() => {
-                    comment.createdAt = new Date(comment.createdAt);
+                    this.clearComments()
+                    this.comments = loadedComments
+                });
+            });
+    
+            this.socket.on('receiveComment', (comment: ChatComment) => {
+                runInAction(() => {
                     this.comments.unshift(comment);
-                })
-            })
+                    console.log(comment);
+                });
+            });
         }
     }
 
     stopHubConnection = () => {
-        this.hubConnection?.stop().catch(error => console.log('Error stopping connection: ', error));
+        this.socket?.disconnect();
     }
 
     clearComments = () => {
@@ -52,10 +57,8 @@ export default class CommentStore {
 
     addComment = async (values: any) => {
         values.tableId = store.tableStore.selectedTable?.id;
-        try {
-            await this.hubConnection?.invoke('SendComment', values);
-        } catch (error) {
-            console.log(error);
+        if (this.socket) { // Check if socket is not null
+            this.socket.emit('sendComment', values.tableId, values);
         }
     }
 }

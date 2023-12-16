@@ -1,6 +1,7 @@
 import { Model, DataTypes, HasManyGetAssociationsMixin, HasManyAddAssociationMixin, HasManyHasAssociationMixin, Association, Optional } from 'sequelize';
 import { sequelize } from '../DB/database';
 import PhotoModel from './photo';
+import CommentModel from './comment';
 
 // User attributes in the database
 interface UserAttributes {

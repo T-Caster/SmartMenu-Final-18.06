@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../DB/database';
+import CommentModel from './comment';
 
 class TableModel extends Model {
     public id!: string;

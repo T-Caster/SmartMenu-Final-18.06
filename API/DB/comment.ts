@@ -1,5 +1,7 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, BelongsToGetAssociationMixin } from 'sequelize';
 import { sequelize } from './database';
+import UserModel from './user';
+import TableModel from './table';
 
 class CommentModel extends Model {
     public id!: number;
@@ -7,6 +9,12 @@ class CommentModel extends Model {
     public userId!: number;
     public tableId!: string;
     public createdAt!: Date;
+
+    // Declare a function to get associated user
+    public getUser!: BelongsToGetAssociationMixin<UserModel>;
+
+    // Optional: Declare the user property for TypeScript
+    public user!: UserModel;
 }
 
 CommentModel.init({
@@ -43,6 +51,16 @@ CommentModel.init({
 }, {
     tableName: 'comments',
     sequelize,
+});
+
+CommentModel.belongsTo(UserModel, {
+    foreignKey: 'userId',
+    as: 'user'
+});
+
+CommentModel.belongsTo(TableModel, {
+    foreignKey: 'tableId',
+    as: 'table'
 });
 
 export default CommentModel;

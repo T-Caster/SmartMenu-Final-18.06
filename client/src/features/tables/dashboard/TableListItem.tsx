@@ -27,7 +27,7 @@ export default function TableListItem({table}:Props) {
                             {table.isHost && ( 
                                 <Item.Description style={{width:'100%'}}>
                                     <Label basic color='orange'>
-                                        You are Opened this table
+                                        You opened this table
                                     </Label>
                                 </Item.Description>
                             )}

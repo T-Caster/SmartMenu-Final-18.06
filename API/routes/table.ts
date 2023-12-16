@@ -7,6 +7,7 @@ import TableAttendeeModel from '../DB/tableAttendees';
 import { Table, TableFormValues } from '../models/table';
 import { authenticateToken } from '../utils/authUtils';
 import { Profile } from '../models/profile';
+import PhotoModel from '../DB/photo';
 
 const router = express.Router();
 
@@ -25,13 +26,17 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
             });
 
             const attendees = await Promise.all(attendeeRecords.map(async (att) => {
-                const user = await UserModel.findByPk(att.userId);
+                const user = await UserModel.findByPk(att.userId, {
+                    include: [{ model: PhotoModel, as: "photos"}]
+                });
                 return user ? getUserProfile(user) : null;
             }));
 
             // Find the host
             const hostRecord = attendeeRecords.find(att => att.isHost);
-            const hostUser = hostRecord ? await UserModel.findByPk(hostRecord.userId) : null;
+            const hostUser = hostRecord ? await UserModel.findByPk(hostRecord.userId, {
+                include: [{ model: PhotoModel, as: "photos"}]
+            }) : null;
             const hostProfile = hostUser ? getUserProfile(hostUser) : undefined;
 
             return {
@@ -71,13 +76,17 @@ router.get('/:id', authenticateToken, async (req: Request, res: Response) => {
         });
 
         const attendees = await Promise.all(attendeeRecords.map(async (att) => {
-            const user = await UserModel.findByPk(att.userId);
+            const user = await UserModel.findByPk(att.userId, {
+                include: [{ model: PhotoModel, as: "photos"}]
+            });
             return user ? getUserProfile(user) : null;
         }));
 
         // Find the host
         const hostRecord = attendeeRecords.find(att => att.isHost);
-        const hostUser = hostRecord ? await UserModel.findByPk(hostRecord.userId) : null;
+        const hostUser = hostRecord ? await UserModel.findByPk(hostRecord.userId, {
+            include: [{ model: PhotoModel, as: "photos"}]
+        }) : null;
         const hostProfile = hostUser ? getUserProfile(hostUser) : undefined;
 
         const tableWithProfile: Table = {
@@ -140,7 +149,10 @@ router.post('/', authenticateToken, async (req: Request, res: Response) => {
             isHost: true
         });
 
-        const user = await UserModel.findByPk(req.user.id);
+        const user = await UserModel.findByPk(req.user.id, {
+            include: [{ model: PhotoModel, as: "photos"}]
+        });
+
         if (!user){
             const error = createError(401, 'User not found');
             return res.status(error.statusCode).send(error)

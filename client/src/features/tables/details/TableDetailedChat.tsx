@@ -76,18 +76,20 @@ return (
             )}
         </Formik>
         <Comment.Group>
-            {commentStore.comments.map(comment => (
-                <Comment key={comment.id}>
+            {commentStore.comments.map(comment => {
+                const createdAtDate = new Date(comment.createdAt);
+                return (<Comment key={comment.id}>
                     <Comment.Avatar src={comment.image || '/assets/user.png'} />
-                    <Comment.Content>
-                        <Comment.Author as={Link} to={`/profiles/${comment.username}`}>{comment.displayName}</Comment.Author>
-                        <Comment.Metadata>
-                            <div>{formatDistanceToNow(comment.createdAt)} ago</div>
-                        </Comment.Metadata>
-                        <Comment.Text style={{ whiteSpace: 'pre-wrap' }}>{comment.body}</Comment.Text>
-                    </Comment.Content>
-                </Comment>
-            ))}
+                        <Comment.Content>
+                            <Comment.Author as={Link} to={`/profiles/${comment.username}`}>{comment.displayName}</Comment.Author>
+                            <Comment.Metadata>
+                                <div>{formatDistanceToNow(createdAtDate)} ago</div>
+                            </Comment.Metadata>
+                            <Comment.Text style={{ whiteSpace: 'pre-wrap' }}>{comment.body}</Comment.Text>
+                        </Comment.Content>
+                    </Comment>
+                )
+            })}
         </Comment.Group>
     </Segment>
 
